@@ -2,7 +2,7 @@
 - LargeInt \
     Length: 10001 \
     Range: 
-    ![](http://latex.codecogs.com/gif.latex?\{10}^{-10000}\to{10}^{10000})
+    ![](http://latex.codecogs.com/gif.latex?\-{10}^{10000}\to{10}^{10000})
     \
     Applied Calculation:
     ```
