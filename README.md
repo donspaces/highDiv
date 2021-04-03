@@ -1,7 +1,7 @@
 # Large Variables
 - LargeInt \
     Length: 10001 \
-    Range: ${-10}^{10000} ~ {10}^{10000}$ \
+    Range: $ -10^{10000} ~ 10^{10000} $ \
     Applied Calculation:
     ```
         1.Basic calculations + - * / |(as %) ^;
