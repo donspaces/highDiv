@@ -14,6 +14,6 @@
 
 ***PS: NON-COMMERCIAL USE ONLY.***
 *Please notify me in person when you want to use this program in
-commercial enviornment.*
-Email: 1554304509@qq.com
+commercial enviornment.* \
+Email: 1554304509@qq.com \
 User: donspaces
