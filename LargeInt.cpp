@@ -18,7 +18,7 @@ LargeInt& LargeInt::operator=(LargeInt const &a)
 {
     int length = (a.len > len) ? a.len : len;
     minus = a.minus;
-    base = a.base;
+    // base = a.base;
     resize(a.len);
     memcpy(value, a.value, length * sizeof(signed char));
     return *this;
@@ -268,7 +268,7 @@ void swap(LargeInt &a, LargeInt &b)
     b = temp;
 }
 
-string LargeInt::toString()
+string LargeInt::toString() const
 {
     string a;
     if(*this == Zero)
@@ -281,7 +281,7 @@ string LargeInt::toString()
     return a;
 }
 
-void LargeInt::toCharArray(char* a)
+void LargeInt::toCharArray(char* a) const
 {
     a = (char*) toString().c_str();
 }
@@ -488,6 +488,20 @@ LargeInt &LargeInt::operator=(char *const &a) {
     (*this) = LargeInt(a);
 
     return *this;
+}
+
+ostream &operator<<(ostream &os, const LargeInt &a) {
+    os << a.toString();
+
+    return os;
+}
+
+istream &operator>>(istream &is, LargeInt &a) {
+    string num;
+    is >> num;
+    a = LargeInt(num);
+
+    return is;
 }
 
 

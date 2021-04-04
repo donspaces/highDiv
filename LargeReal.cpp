@@ -10,6 +10,9 @@ using namespace std;
 
 LargeReal const fZero("0");
 LargeReal const fOne("1");
+LargeReal const PI("3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679");
+LargeReal const Exp("2.7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274");
+LargeReal const Hv = LargeReal("6.626070040") << 34;
 
 LargeReal LargeReal::rm(int d) {
     LargeReal x(len + d);
@@ -57,7 +60,7 @@ void LargeReal::print() {
     cout<<endl;
 }
 
-string LargeReal::toString()
+string LargeReal::toString() const
 {
     string a;
     if(*this == Zero)
@@ -71,7 +74,7 @@ string LargeReal::toString()
     return a;
 }
 
-void LargeReal::toCharArray(char* a)
+void LargeReal::toCharArray(char* a) const
 {
     a = (char*) toString().c_str();
 }
@@ -79,7 +82,7 @@ void LargeReal::toCharArray(char* a)
 LargeReal &LargeReal::operator=(LargeReal const &a) {
     int length = (a.len > len) ? a.len : len;
     minus = a.minus;
-    base = a.base;
+    // base = a.base;
     resize(a.len);
     memcpy(value, a.value, length * sizeof(signed char));
     dot_p = a.dot_p;
@@ -470,7 +473,26 @@ LargeReal &LargeReal::operator=(char *const &a) {
     return *this;
 }
 
+ostream &operator<<(ostream &os, const LargeReal &a) {
+    os << a.toString();
 
+    return os;
+}
+
+istream &operator>>(istream &is, LargeReal &a) {
+    string num;
+    is >> num;
+    a = LargeReal(num);
+
+    return is;
+}
+
+LargeReal LargeReal::operator-() {
+    LargeReal x = (*this);
+    x.minus = !x.minus;
+
+    return x;
+}
 
 
 

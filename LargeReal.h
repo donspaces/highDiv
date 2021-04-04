@@ -22,23 +22,17 @@ public:
         len = str.length();
         if(str[0] == '-') {
             minus = true;
-            mode = 2;
         }
         for(i=0; i<len; i++)
         {
-            if(str[i] == '.') {
+            if(str[len - i - mode] == '.') {
                 dot_p = i;
-                mode = 2;
+                mode++;
             }
-            switch(mode)
-            {
-                case 1:value[i] = str[len - i - 1] - '0';break;
-                case 2:value[i] = str[len - i] - '0';break;
-                default:break;
-            }
+            value[i] = str[len - i - mode] - '0';
         }
 
-        base = 10;
+        // base = 10;
 
         ~(*this);
     }
@@ -59,7 +53,7 @@ public:
             value[i] = str[len - i - mode] - '0';
         }
 
-        base = 10;
+        // base = 10;
 
         ~(*this);
     }
@@ -92,6 +86,8 @@ public:
     LargeReal operator>>(int d);
     LargeReal operator<<(int d);
 
+    LargeReal operator-();
+
     LargeReal & operator++();
     LargeReal & operator--();
 
@@ -112,6 +108,9 @@ public:
     LargeReal operator%(int d);
 
     LargeReal & operator%=(int d);
+
+    friend ostream& operator<<(ostream& os, LargeReal const &a);
+    friend istream& operator>>(istream& is, LargeReal &a);
 
     friend void swap(LargeReal &a, LargeReal &b);
 
@@ -142,12 +141,15 @@ public:
 
     //output
     void print() override;
-    string toString() override;
-    void toCharArray(char* a) override;
+    string toString() const override;
+    void toCharArray(char* a) const override;
     
 };
 
 extern LargeReal const fZero;
 extern LargeReal const fOne;
+extern LargeReal const PI;
+extern LargeReal const Exp;
+extern LargeReal const Hv;
 
 #endif //HIGHDIV_LARGEREAL_H

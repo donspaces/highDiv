@@ -17,7 +17,7 @@ protected:
     bool minus = false;
     signed char value[10001]={0};
     int len=0;
-    int base=10;
+    // int base=10;
     void resize(int size);
     LargeInt(int l):len(l){}
 
@@ -35,7 +35,7 @@ public:
         for (i = 0; i < len; i++)
             value[i] = str[len - i - 1] - '0';
 
-        base = 10;
+        // base = 10;
 
         ~(*this);
     }
@@ -50,7 +50,7 @@ public:
         for (i = 0; i < len; i++)
             value[i] = str[len - i - 1] - '0';
 
-        base = 10;
+        // base = 10;
 
         ~(*this);
     }
@@ -59,7 +59,7 @@ public:
     {
         int length = (a.len > len) ? a.len : len;
         minus = a.minus;
-        base = a.base;
+        // base = a.base;
         resize(a.len);
         memcpy(value, a.value, length * sizeof(signed char));
     }
@@ -106,6 +106,9 @@ public:
     LargeInt & operator>>=(int d);
     LargeInt & operator<<=(int d);
 
+    friend ostream& operator<<(ostream& os, LargeInt const &a);
+    friend istream& operator>>(istream& is, LargeInt &a);
+
     friend void swap(LargeInt &a, LargeInt &b);
 
     //mathematics
@@ -118,9 +121,9 @@ public:
     virtual //output
     void print();
 
-    virtual string toString();
+    virtual string toString() const;
 
-    virtual void toCharArray(char* a);
+    virtual void toCharArray(char* a) const;
     int length() const;
     bool negate();
 };
