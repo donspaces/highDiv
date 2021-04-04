@@ -3,4 +3,4 @@ project(highDiv)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(highDiv main.cpp LargeInt.cpp LargeInt.h)
+add_executable(highDiv main.cpp LargeInt.cpp LargeInt.h LargeReal.cpp LargeReal.h)

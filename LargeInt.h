@@ -13,10 +13,11 @@ using namespace std;
 
 
 class LargeInt {
-private:
+protected:
     bool minus = false;
     signed char value[10001]={0};
     int len=0;
+    int base=10;
     void resize(int size);
     LargeInt(int l):len(l){}
 
@@ -24,37 +25,33 @@ public:
     //member methods
     LargeInt():len(0){};
 
-    LargeInt(string str)
+    explicit LargeInt(string str)
     {
         int i;
         len = str.length();
-        if(str[0]=='-') {
-            len--;
+        if(str[0]=='-')
             minus = true;
-            for (i = 0; i < len; i++)
-                value[i] = str[len - i] - '0';
-        }
-        else {
-            for (i = 0; i < len; i++)
-                value[i] = str[len - i - 1] - '0';
-        }
+
+        for (i = 0; i < len; i++)
+            value[i] = str[len - i - 1] - '0';
+
+        base = 10;
+
         ~(*this);
     }
 
-    LargeInt(char* str)
+    explicit LargeInt(char* str)
     {
         int i;
         len = strlen(str);
-        if(str[0]=='-') {
-            len--;
+        if(str[0]=='-')
             minus = true;
-            for (i = 0; i < len; i++)
-                value[i] = str[len - i] - '0';
-        }
-        else {
-            for (i = 0; i < len; i++)
-                value[i] = str[len - i - 1] - '0';
-        }
+
+        for (i = 0; i < len; i++)
+            value[i] = str[len - i - 1] - '0';
+
+        base = 10;
+
         ~(*this);
     }
 
@@ -62,6 +59,7 @@ public:
     {
         int length = (a.len > len) ? a.len : len;
         minus = a.minus;
+        base = a.base;
         resize(a.len);
         memcpy(value, a.value, length * sizeof(signed char));
     }
@@ -73,6 +71,8 @@ public:
     friend LargeInt operator/(LargeInt a, LargeInt b);
     friend LargeInt operator|(LargeInt a, LargeInt b); //mod
     LargeInt& operator=(LargeInt const &a);
+    LargeInt& operator=(string const &a);
+    LargeInt& operator=(char* const &a);
     friend bool operator<(LargeInt const &a, LargeInt const &b);
     friend bool operator==(LargeInt const &a, LargeInt const &b);
     friend bool operator!=(LargeInt const &a, LargeInt const &b);
@@ -81,11 +81,12 @@ public:
     friend bool operator>=(LargeInt const &a, LargeInt const &b);
 
     LargeInt operator>>(int d);
+
     LargeInt operator<<(int d);
 
     LargeInt operator-();
 
-    LargeInt& operator~(); //reformat
+    virtual LargeInt& operator~(); //reformat
 
     friend LargeInt operator^(LargeInt const &a, int b); //power
 
@@ -99,6 +100,8 @@ public:
     LargeInt & operator-=(LargeInt const &a);
     LargeInt & operator*=(LargeInt const &a);
     LargeInt & operator/=(LargeInt const &a);
+    LargeInt & operator|=(LargeInt const &a);
+    LargeInt & operator^=(int &a);
 
     LargeInt & operator>>=(int d);
     LargeInt & operator<<=(int d);
@@ -112,10 +115,12 @@ public:
     friend LargeInt subt(LargeInt a, LargeInt b);
     friend LargeInt labs(LargeInt const &a);
 
-    //output
+    virtual //output
     void print();
-    string toString();
-    void toCharArray(char* a);
+
+    virtual string toString();
+
+    virtual void toCharArray(char* a);
     int length() const;
     bool negate();
 };

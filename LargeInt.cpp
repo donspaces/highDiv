@@ -18,6 +18,7 @@ LargeInt& LargeInt::operator=(LargeInt const &a)
 {
     int length = (a.len > len) ? a.len : len;
     minus = a.minus;
+    base = a.base;
     resize(a.len);
     memcpy(value, a.value, length * sizeof(signed char));
     return *this;
@@ -282,13 +283,7 @@ string LargeInt::toString()
 
 void LargeInt::toCharArray(char* a)
 {
-    if(*this == Zero)
-        a[0] = '0';
-    else if(minus)
-        a[0] = '-';
-    for(int j=len-1; j>=0; j--) {
-        a[len - j - 1] = (char) (value[j] + '0');
-    }
+    a = (char*) toString().c_str();
 }
 
 LargeInt& LargeInt::operator++() {
@@ -343,6 +338,18 @@ LargeInt& LargeInt::operator/=(LargeInt const &a) {
     return *this;
 }
 
+LargeInt &LargeInt::operator|=(const LargeInt &a) {
+    *this = *this | a;
+
+    return *this;
+}
+
+LargeInt &LargeInt::operator^=(int &a) {
+    *this = *this ^ a;
+
+    return *this;
+}
+
 LargeInt &LargeInt::operator>>=(int d) {
     *this = *this >> d;
 
@@ -357,7 +364,11 @@ LargeInt &LargeInt::operator<<=(int d) {
 
 LargeInt& LargeInt::operator~()
 {
-    while(value[len-1] == 0 && len > 0) len--;
+    while(value[len-1] <= 0 && len > 0)
+    {
+        value[len - 1] = 0;
+        len--;
+    }
 
     return *this;
 }
@@ -371,7 +382,12 @@ LargeInt LargeInt::rcd(int d) {
         cerr << "cannot bitshift with negative." << endl;
         exit(-1);
     }
+    if(d==0)
+    {
+        return (*this);
+    }
     LargeInt x(len + d);
+    x.minus = minus;
     int i;
     for(i=len+d-1; i>=d; i--)
     {
@@ -386,9 +402,14 @@ LargeInt LargeInt::lcd(int d) {
         cerr << "cannot bitshift with negative." << endl;
         exit(-1);
     }
+    if(d==0)
+    {
+        return (*this);
+    }
     if(d>len)
         return Zero;
     LargeInt x(len - d);
+    x.minus = minus;
     int i;
     for(i=len-d-1; i>=0; i--)
     {
@@ -456,6 +477,19 @@ LargeInt labs(LargeInt const &a)
 
     return c;
 }
+
+LargeInt &LargeInt::operator=(const string &a) {
+    (*this) = LargeInt(a);
+
+    return *this;
+}
+
+LargeInt &LargeInt::operator=(char *const &a) {
+    (*this) = LargeInt(a);
+
+    return *this;
+}
+
 
 
 
