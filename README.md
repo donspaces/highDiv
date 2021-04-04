@@ -6,7 +6,7 @@
     \
     Applied Calculation:
     ```
-        1.Basic calculations + - * / |(as %) ^;
+        1.Basic calculations + - * / |(as mod) ^;
         2.Logic comparisons == != < > <= >=;
         3. += -= *= /= ++ -- << >> <<= >>= ~*;
     ```
@@ -17,7 +17,7 @@
     \
     Applied Calculation:
     ```
-        1.Basic calculations + - * / |(as %) ^;
+        1.Basic calculations + - * / %(as round) ^;
         2.Logic comparisons == != < > <= >=;
         3. += -= *= /= ++ -- << >> <<= >>= ~*;
     ```
