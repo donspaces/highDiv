@@ -214,14 +214,14 @@ bool operator>=(LargeInt const &a, LargeInt const &b)
     return !(a<b);
 }
 
-LargeInt LargeInt::operator>>(int d)
+LargeInt LargeInt::operator>>(int d) const
 {
     if(d<0)
         return lcd(-d);
     return rcd(d);
 }
 
-LargeInt LargeInt::operator<<(int d)
+LargeInt LargeInt::operator<<(int d) const
 {
     if(d<0)
         return rcd(-d);
@@ -235,19 +235,27 @@ LargeInt LargeInt::operator-() {
     return c;
 }
 
-LargeInt operator^(LargeInt const &a, int b)
-{
+LargeInt operator^(LargeInt const &a, int b) {
     LargeInt x = One;
-    int i;
-    for(i=1; i<=b; i++)
-    {
+
+    for (int i = 1; i <= b; i++) {
         x = x * a;
     }
 
     return x;
 }
 
-void LargeInt::print()
+LargeInt operator^(LargeInt const &a, LargeInt const &b) {
+    LargeInt x = One;
+
+    for (LargeInt i = One; i <= b; i++) {
+        x = x * a;
+    }
+
+    return x;
+}
+
+void LargeInt::print() const
 {
     if(*this == Zero)
         cout<<0;
@@ -377,7 +385,7 @@ int LargeInt::length() const {
     return len;
 }
 
-LargeInt LargeInt::rcd(int d) {
+LargeInt LargeInt::rcd(int d) const {
     if(d<0) {
         cerr << "cannot bitshift with negative." << endl;
         exit(-1);
@@ -397,7 +405,7 @@ LargeInt LargeInt::rcd(int d) {
     return x;
 }
 
-LargeInt LargeInt::lcd(int d) {
+LargeInt LargeInt::lcd(int d) const {
     if(d<0) {
         cerr << "cannot bitshift with negative." << endl;
         exit(-1);
@@ -502,6 +510,22 @@ istream &operator>>(istream &is, LargeInt &a) {
     a = LargeInt(num);
 
     return is;
+}
+
+int LargeInt::operator[](int d) const {
+    return value[d];
+}
+
+LargeInt factorial(LargeInt l)
+{
+    LargeInt i, a = One;
+        for(i=One; i<=l; i++)
+        {
+            a *= i;
+        }
+
+
+    return a;
 }
 
 

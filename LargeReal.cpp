@@ -14,7 +14,7 @@ LargeReal const PI("3.1415926535897932384626433832795028841971693993751058209749
 LargeReal const Exp("2.7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274");
 LargeReal const Hv = LargeReal("6.626070040") << 34;
 
-LargeReal LargeReal::rm(int d) {
+LargeReal LargeReal::rm(int d) const {
     LargeReal x(len + d);
     if(d < 0)
         return lm(-d);
@@ -29,7 +29,7 @@ LargeReal LargeReal::rm(int d) {
     return x;
 }
 
-LargeReal LargeReal::lm(int d) {
+LargeReal LargeReal::lm(int d) const {
     LargeReal x(len + d);
     if(d < 0)
         return rm(-d);
@@ -42,13 +42,13 @@ LargeReal LargeReal::lm(int d) {
     }
     else{
         x = LargeReal(LargeInt::lcd(dot_p));
-        dot_p = 0;
+        x.dot_p = 0;
     }
 
     return x;
 }
 
-void LargeReal::print() {
+void LargeReal::print() const {
     if(*this == Zero)
         cout<<0;
     else if(minus)
@@ -133,7 +133,7 @@ LargeReal operator-(LargeReal a, LargeReal b) {
     return e;
 }
 
-LargeReal operator*(LargeReal a, LargeReal b) {
+LargeReal operator*(LargeReal const &a, LargeReal const &b) {
     int deci = a.dot_p + b.dot_p;
     LargeInt c = a, d = b;
     LargeReal e = LargeReal(c * d);
@@ -144,11 +144,11 @@ LargeReal operator*(LargeReal a, LargeReal b) {
     return e;
 }
 
-LargeReal operator/(LargeReal a, LargeReal b) {
+LargeReal operator/(LargeReal const &a, LargeReal const &b) {
     return fdiv(a, b, 20);
 }
 
-LargeReal LargeReal::operator%(int d) {
+LargeReal LargeReal::operator%(int d) const {
     LargeReal x;
     x = lm(dot_p - d);
 
@@ -168,21 +168,21 @@ void align(LargeReal &a, LargeReal &b) {
         a %= b.dot_p;
 }
 
-int LargeReal::countzero() {
+int LargeReal::countzero() const {
     int i = 0;
     while(value[i++] == 0);
 
     return i - 1;
 }
 
-int LargeReal::countzero_below_dotp() {
+int LargeReal::countzero_below_dotp() const {
     int i = 0;
     while(value[i++] == 0 && i<=dot_p);
 
     return i - 1;
 }
 
-LargeReal LargeReal::frcd(int d) {
+LargeReal LargeReal::frcd(int d) const {
     if(d < 0) {
         cerr << "cannot digit-shift with negative." << endl;
         exit(-1);
@@ -203,7 +203,7 @@ LargeReal LargeReal::frcd(int d) {
     return x;
 }
 
-LargeReal LargeReal::flcd(int d) {
+LargeReal LargeReal::flcd(int d) const {
     if(d < 0) {
         cerr << "cannot digit-shift with negative." << endl;
         exit(-1);
@@ -225,14 +225,14 @@ LargeReal LargeReal::flcd(int d) {
     return x;
 }
 
-LargeReal LargeReal::operator>>(int d) {
+LargeReal LargeReal::operator>>(int d) const {
     if(d < 0)
         return flcd(-d);
 
     return frcd(d);
 }
 
-LargeReal LargeReal::operator<<(int d) {
+LargeReal LargeReal::operator<<(int d) const {
     if(d < 0)
         return frcd(-d);
 
@@ -279,18 +279,18 @@ LargeReal fabs(const LargeReal &a) {
     return x;
 }
 
-LargeReal LargeReal::Floor(int d) {
+LargeReal LargeReal::Floor(int d) const {
     return (*this) % d;
 }
 
-LargeReal LargeReal::Ceil(int d) {
+LargeReal LargeReal::Ceil(int d) const {
     LargeReal x = (*this) % d;
     x += (LargeReal) fOne << d;
 
     return x;
 }
 
-LargeReal LargeReal::round(int d) {
+LargeReal LargeReal::round(int d) const {
     LargeReal x = (*this) % (d+1);
     if(x.value[0] <= 4)
         return Floor(d);
@@ -387,11 +387,11 @@ void swap(LargeReal &a, LargeReal &b) {
     b = temp;
 }
 
-int LargeReal::int_digits() {
+int LargeReal::int_digits() const {
     return len - dot_p;
 }
 
-int LargeReal::deci_digits() {
+int LargeReal::deci_digits() const {
     return dot_p;
 }
 
@@ -445,7 +445,7 @@ LargeReal fdiv(LargeReal a, LargeReal b, int digits) {
 
 }
 
-LargeReal operator^(const LargeReal &a, int d) {
+LargeReal operator^(LargeReal const &a, int d) {
     LargeReal res = fOne;
     if(d > 0) {
         for (int i = 1; i <= d; i++) {
@@ -454,6 +454,22 @@ LargeReal operator^(const LargeReal &a, int d) {
     }
     else{
         for (int i = -1; i >= d; i--) {
+            res /= a;
+        }
+    }
+
+    return res;
+}
+
+LargeReal operator^(LargeReal const &a, LargeReal const &b) {
+    LargeReal res = fOne, i;
+    if(b > fZero) {
+        for (i = fOne; i <= b; i++) {
+            res *= a;
+        }
+    }
+    else{
+        for (i = -fOne; i >= b; i--) {
             res /= a;
         }
     }
@@ -487,11 +503,60 @@ istream &operator>>(istream &is, LargeReal &a) {
     return is;
 }
 
-LargeReal LargeReal::operator-() {
+LargeReal LargeReal::operator-() const {
     LargeReal x = (*this);
     x.minus = !x.minus;
 
     return x;
+}
+
+int LargeReal::operator[](int d) const {
+    return value[d+dot_p];
+}
+
+LargeReal LargeReal::operator()(int d) const {
+    LargeReal x = (*this);
+    if(d <= 0)
+        return x.round(-d);
+
+    x = x.round(0);
+    if (value[x.dot_p + d - 1] >= 5)
+        x.value[d]++;
+    for (int i = x.dot_p; i <= x.dot_p + d - 1; i++) {
+        x.value[i] = 0;
+    }
+
+    ~x;
+
+    return x;
+}
+
+LargeReal fsqrt(LargeReal const &n, int digits)
+{
+    if(n < 0) {
+        cerr << "No real solution." << endl;
+        exit(-1);
+    }
+    if(n == 0) return fZero;
+
+    LargeReal x("2"), temp;
+    while(fabs(temp - x) >= (fOne << digits)) {
+        temp = x;
+        x = fdiv(x + fdiv(n, x, digits), LargeReal("2"), digits);
+    }
+
+    return x;
+}
+
+LargeReal factorial(LargeReal l)
+{
+    LargeReal i, a = fOne;
+    for(i=fOne; i<=l; i++)
+    {
+        a *= i;
+    }
+
+    return a;
 }
 
 

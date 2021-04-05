@@ -15,7 +15,7 @@ using namespace std;
 class LargeInt {
 protected:
     bool minus = false;
-    signed char value[10001]={0};
+    signed char value[100001]={0};
     int len=0;
     // int base=10;
     void resize(int size);
@@ -25,7 +25,7 @@ public:
     //member methods
     LargeInt():len(0){};
 
-    explicit LargeInt(string str)
+    explicit LargeInt(string const &str)
     {
         int i;
         len = str.length();
@@ -40,7 +40,7 @@ public:
         ~(*this);
     }
 
-    explicit LargeInt(char* str)
+    explicit LargeInt(char* const &str)
     {
         int i;
         len = strlen(str);
@@ -80,15 +80,15 @@ public:
     friend bool operator<=(LargeInt const &a, LargeInt const &b);
     friend bool operator>=(LargeInt const &a, LargeInt const &b);
 
-    LargeInt operator>>(int d);
+    LargeInt operator>>(int d) const;
 
-    LargeInt operator<<(int d);
+    LargeInt operator<<(int d) const;
 
     LargeInt operator-();
 
     virtual LargeInt& operator~(); //reformat
-
     friend LargeInt operator^(LargeInt const &a, int b); //power
+    friend LargeInt operator^(LargeInt const &a, LargeInt const &b);
 
     LargeInt & operator++();
     LargeInt & operator--();
@@ -106,20 +106,24 @@ public:
     LargeInt & operator>>=(int d);
     LargeInt & operator<<=(int d);
 
+    virtual int operator[](int d) const;
+
     friend ostream& operator<<(ostream& os, LargeInt const &a);
     friend istream& operator>>(istream& is, LargeInt &a);
 
     friend void swap(LargeInt &a, LargeInt &b);
 
     //mathematics
-    LargeInt rcd(int d);
-    LargeInt lcd(int d);
+    LargeInt rcd(int d) const;
+    LargeInt lcd(int d) const;
     friend LargeInt agg(LargeInt const &a, LargeInt const &b);
     friend LargeInt subt(LargeInt a, LargeInt b);
     friend LargeInt labs(LargeInt const &a);
 
+    friend LargeInt factorial(LargeInt l);
+
     virtual //output
-    void print();
+    void print() const;
 
     virtual string toString() const;
 

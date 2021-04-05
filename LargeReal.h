@@ -16,7 +16,7 @@ protected:
 public:
     LargeReal():dot_p(0),LargeInt(){}
     
-    explicit LargeReal(string str)
+    explicit LargeReal(string const &str)
     {
         int i, mode = 1;
         len = str.length();
@@ -37,7 +37,7 @@ public:
         ~(*this);
     }
 
-    explicit LargeReal(char* str)
+    explicit LargeReal(char* const &str)
     {
         int i, mode = 1;
         len = strlen(str);
@@ -70,9 +70,10 @@ public:
 
     friend LargeReal operator+(LargeReal a, LargeReal b);
     friend LargeReal operator-(LargeReal a, LargeReal b);
-    friend LargeReal operator*(LargeReal a, LargeReal b);
-    friend LargeReal operator/(LargeReal a, LargeReal b);
+    friend LargeReal operator*(LargeReal const &a, LargeReal const &b);
+    friend LargeReal operator/(LargeReal const &a, LargeReal const &b);
     friend LargeReal operator^(LargeReal const &a, int d);
+    friend LargeReal operator^(LargeReal const &a, LargeReal const &b);
     LargeReal& operator=(LargeReal const &a);
     LargeReal& operator=(string const &a);
     LargeReal& operator=(char* const &a);
@@ -83,10 +84,10 @@ public:
     friend bool operator<=(LargeReal const &a, LargeReal const &b);
     friend bool operator>=(LargeReal const &a, LargeReal const &b);
 
-    LargeReal operator>>(int d);
-    LargeReal operator<<(int d);
+    LargeReal operator>>(int d) const;
+    LargeReal operator<<(int d) const;
 
-    LargeReal operator-();
+    LargeReal operator-() const;
 
     LargeReal & operator++();
     LargeReal & operator--();
@@ -105,42 +106,48 @@ public:
 
     LargeReal & operator~() override; //reformat
 
-    LargeReal operator%(int d);
+    LargeReal operator%(int d) const;
 
     LargeReal & operator%=(int d);
 
     friend ostream& operator<<(ostream& os, LargeReal const &a);
     friend istream& operator>>(istream& is, LargeReal &a);
 
+    int operator[](int d) const override;
+    LargeReal operator()(int d) const;
+
     friend void swap(LargeReal &a, LargeReal &b);
 
 
-    LargeReal rm(int d); //right shift decimal
-    LargeReal lm(int d); //left shift decimal
+    LargeReal rm(int d) const; //right shift decimal
+    LargeReal lm(int d) const; //left shift decimal
 
     friend void align(LargeReal &a, LargeReal &b);
     friend void norm(LargeReal &a, LargeReal &b);
 
-    int countzero();
-    int countzero_below_dotp();
-    int int_digits();
-    int deci_digits();
+    int countzero() const;
+    int countzero_below_dotp() const;
+    int int_digits() const;
+    int deci_digits() const;
 
     //mathematics
-    LargeReal frcd(int d);
-    LargeReal flcd(int d);
-    LargeReal Floor(int d);
-    LargeReal Ceil(int d);
-    LargeReal round(int d);
+    LargeReal frcd(int d) const;
+    LargeReal flcd(int d) const;
+    LargeReal Floor(int d) const;
+    LargeReal Ceil(int d) const;
+    LargeReal round(int d) const;
     friend LargeInt Int(LargeReal &a);
     friend LargeReal fabs(LargeReal const &a);
     friend LargeReal fdiv(LargeReal a, LargeReal b, int digits);
+
+    friend LargeReal fsqrt(LargeReal const &n, int digits);
+    friend LargeReal factorial(LargeReal l);
 
     friend LargeReal fadd(LargeReal a, LargeReal b);
     friend LargeReal fsubt(LargeReal a, LargeReal b);
 
     //output
-    void print() override;
+    void print() const override;
     string toString() const override;
     void toCharArray(char* a) const override;
     

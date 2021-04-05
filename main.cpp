@@ -2,17 +2,6 @@
 #include "LargeInt.h"
 using namespace std;
 
-LargeInt factorial(string l)
-{
-    LargeInt i, a = One;
-    for(i=One; i<=LargeInt(l); i++)
-    {
-        a *= i;
-    }
-
-    return a;
-}
-
 int main() {
     LargeInt a("24720"), b("24"), c("13145026897624");
     LargeInt d;
