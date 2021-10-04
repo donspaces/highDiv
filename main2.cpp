@@ -78,7 +78,7 @@ int main()
     complex<LargeReal> lcomp2(LargeReal("12.6"), LargeReal("33.1"));
 
     cout << lcomp1 / lcomp2 << endl;
-
+	
     cout << factorial(LargeReal("100")) << endl;
 
     cout << "pi(100 digits) =  " << PI << endl;

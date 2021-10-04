@@ -41,7 +41,7 @@ int main() {
     (e|f).toCharArray(arr);
     cout<<arr<<endl;
 
-    LargeInt fac = factorial("1000");
+    LargeInt fac = factorial(LargeInt("1000"));
     fac.print();
 
     (fac|Zero).print();
